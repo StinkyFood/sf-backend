@@ -13,7 +13,7 @@ final class StreamObserverUtility {
             StreamObserver<Target> target,
             Function<Source, Target> handler
     ) {
-        return new StreamObserver<Source>() {
+        return new StreamObserver<>() {
             @Override
             public void onNext(Source value) {
                 final Target targetValue = handler.apply(value);
