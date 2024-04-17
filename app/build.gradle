@@ -4,6 +4,8 @@ plugins {
 	id 'org.graalvm.buildtools.native' version '0.9.28'
 	id 'org.springframework.boot' version '3.2.4'
 	id 'io.spring.dependency-management' version '1.1.4'
+
+    id "com.google.protobuf" version "0.9.4"
 }
 
 application {
@@ -30,7 +32,6 @@ ext {
 dependencies {
     implementation project(':utilities')
     implementation 'org.apache.commons:commons-text'
-
     //implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	//implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	//implementation 'org.springframework.boot:spring-boot-starter-jooq'
@@ -39,6 +40,19 @@ dependencies {
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+// GRPC
+def grpcVersion = '1.63.0'
+def protobufVersion = '3.25.3'
+dependencies {
+    // https://mvnrepository.com/artifact/net.devh/grpc-server-spring-boot-starter
+    implementation 'net.devh:grpc-server-spring-boot-starter:3.1.0.RELEASE'
+    implementation "io.grpc:grpc-stub:${grpcVersion}"
+    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    implementation "com.google.protobuf:protobuf-java-util:${protobufVersion}"
+    implementation "com.google.protobuf:protobuf-java:${protobufVersion}"
+    implementation 'javax.annotation:javax.annotation-api:1.2'
 }
 
 dependencyManagement {
@@ -53,3 +67,14 @@ hibernate {
 	}
 }
 
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${protobufVersion}"
+    }
+    plugins {
+        grpc { artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}" }
+    }
+    generateProtoTasks {
+        all()*.plugins { grpc {} }
+    }
+}

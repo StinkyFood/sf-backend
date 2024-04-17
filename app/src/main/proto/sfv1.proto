@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package sf.v1;
+option go_package = "./;protocol";
+
+message HelloWorldRequest {
+    optional string name = 1;
+}
+
+message HelloWorldResponse {
+    string greeting = 1;
+}
+
+service HelloWorldService {
+    rpc SayHello(stream HelloWorldRequest) returns (stream HelloWorldResponse);
+}
