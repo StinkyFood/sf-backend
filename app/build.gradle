@@ -1,0 +1,55 @@
+plugins {
+    id 'buildlogic.java-application-conventions'
+	id 'org.hibernate.orm' version '6.4.4.Final'
+	id 'org.graalvm.buildtools.native' version '0.9.28'
+	id 'org.springframework.boot' version '3.2.4'
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+application {
+    mainClass = 'org.example.app.App'
+}
+
+group = 'com.sf'
+version = '0.0.1-SNAPSHOT'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('springCloudVersion', "2023.0.1")
+}
+
+dependencies {
+    implementation project(':utilities')
+    implementation 'org.apache.commons:commons-text'
+
+    //implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	//implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	//implementation 'org.springframework.boot:spring-boot-starter-jooq'
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+hibernate {
+	enhancement {
+		enableAssociationManagement = true
+	}
+}
+

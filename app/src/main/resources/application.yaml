@@ -1,0 +1,5 @@
+spring:
+  application.name: ${SF_APP_NAME}
+  profiles.active: ${SF_ACTIVE_PROFILE}
+  cloud.config.lagel: ${SF_ACTIVE_LABEL}
+  config.import: optional:configserver:${SF_CONFIG_SERVER_URL}
